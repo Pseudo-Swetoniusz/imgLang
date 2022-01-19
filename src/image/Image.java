@@ -38,16 +38,16 @@ public class Image {
         this("image", width, height, opacity, rgb);
     }
 
-    public Image(int width, int height, double opacity) {
-        this("image", width,height,opacity,new RGB(255,255,255));
+    public Image(String imageName,int width, int height, double opacity) {
+        this(imageName, width,height,opacity,new RGB(255,255,255));
     }
 
-    public Image(int width, int height, RGB rgb) {
-        this("image", width,height,1.0,rgb);
+    public Image(String imageName,int width, int height, RGB rgb) {
+        this(imageName, width,height,1.0,rgb);
     }
 
-    public Image(int width, int height) {
-        this("image", width,height,1.0,new RGB(255,255,255));
+    public Image(String imageName,int width, int height) {
+        this(imageName, width,height,1.0,new RGB(255,255,255));
     }
 
     public void sortLayers() {

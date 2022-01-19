@@ -34,6 +34,10 @@ public class ImageListener extends ImgLangBaseListener{
     private boolean transformationsS = false;
     private int rotate;
     private double scale;
+    private boolean opacityB = false;
+    private boolean rgbB = false;
+    private boolean opacityS = false;
+    private boolean rgbS = false;
 
     public void enterImgBlock(ImgLangParser.ImgBlockContext ctx) {
         //System.out.println("In image_block");
@@ -69,20 +73,46 @@ public class ImageListener extends ImgLangBaseListener{
         //System.out.println("out of back_block");
         int w = Integer.parseInt(this.width);
         int h = Integer.parseInt(this.height);
-        double o = Double.parseDouble(this.opacity);
-        RGB rgb = new RGB(Integer.parseInt(this.r), Integer.parseInt(this.g),Integer.parseInt(this.b));
-        this.image = new Image(this.imageName,w,h,o,rgb);
-        this.inBackground = false;
+        if(this.opacityB == false && this.rgbB == false) {
+            this.image = new Image(this.imageName,w,h);
+            this.inBackground = false;
+        }
+        else if(this.opacityB == true && this.rgbB == true) {
+            double o = Double.parseDouble(this.opacity);
+            RGB rgb = new RGB(Integer.parseInt(this.r), Integer.parseInt(this.g),Integer.parseInt(this.b));
+            this.image = new Image(this.imageName,w,h,o,rgb);
+            this.inBackground = false;
+        }
+        else if(this.opacityB == true && this.rgbB == false) {
+            double o = Double.parseDouble(this.opacity);
+            this.image = new Image(this.imageName,w,h,o);
+            this.inBackground = false;
+        }
+        else if(this.opacityB == false && this.rgbB == true) {
+            RGB rgb = new RGB(Integer.parseInt(this.r), Integer.parseInt(this.g),Integer.parseInt(this.b));
+            this.image = new Image(this.imageName,w,h,rgb);
+            this.inBackground = false;
+        }
     }
 
     public void enterBack_param(ImgLangParser.Back_paramContext ctx) {
         //System.out.println("in back_param");
         this.width = ctx.width_sub().NUMBER().toString();
         this.height = ctx.height_sub().NUMBER().toString();
-        this.opacity = ctx.opacity_sub().DOUBLE().toString();
-        this.r = ctx.color_sub().rgb_val().NUMBER(0).toString();
-        this.g = ctx.color_sub().rgb_val().NUMBER(1).toString();
-        this.b = ctx.color_sub().rgb_val().NUMBER(2).toString();
+        TerminalNode opac = ctx.opacity_sub().DOUBLE();
+        if(opac != null) {
+            this.opacity = ctx.opacity_sub().DOUBLE().toString();
+            this.opacityB = true;
+        }
+        TerminalNode rNode = ctx.color_sub().rgb_val().NUMBER(0);
+        TerminalNode gNode = ctx.color_sub().rgb_val().NUMBER(1);
+        TerminalNode bNode = ctx.color_sub().rgb_val().NUMBER(2);
+        if(rNode != null && gNode != null && bNode != null) {
+            this.r = ctx.color_sub().rgb_val().NUMBER(0).toString();
+            this.g = ctx.color_sub().rgb_val().NUMBER(1).toString();
+            this.b = ctx.color_sub().rgb_val().NUMBER(2).toString();
+            this.rgbB = true;
+        }
     }
 
     public void exitBack_param(ImgLangParser.Back_paramContext ctx) {
@@ -132,13 +162,23 @@ public class ImageListener extends ImgLangBaseListener{
         //System.out.println("in rect_param");
         this.shapeWidth = ctx.width_sub().NUMBER().toString();
         this.shapeHeight = ctx.height_sub().NUMBER().toString();
-        this.shapeR = ctx.color_sub().rgb_val().NUMBER(0).toString();
-        this.shapeG = ctx.color_sub().rgb_val().NUMBER(1).toString();
-        this.shapeB = ctx.color_sub().rgb_val().NUMBER(2).toString();
+        TerminalNode rNode = ctx.color_sub().rgb_val().NUMBER(0);
+        TerminalNode gNode = ctx.color_sub().rgb_val().NUMBER(1);
+        TerminalNode bNode = ctx.color_sub().rgb_val().NUMBER(2);
+        if(rNode != null && gNode != null && bNode != null) {
+            this.shapeR = ctx.color_sub().rgb_val().NUMBER(0).toString();
+            this.shapeG = ctx.color_sub().rgb_val().NUMBER(1).toString();
+            this.shapeB = ctx.color_sub().rgb_val().NUMBER(2).toString();
+            this.rgbS = true;
+        }
+        TerminalNode oNode = ctx.opacity_sub().DOUBLE();
         this.shapePriority = ctx.priority_sub().NUMBER().toString();
         this.shapePositionX = ctx.position_sub().position_val().NUMBER(0).toString();
         this.shapePositionY = ctx.position_sub().position_val().NUMBER(1).toString();
-        this.shapeOpacity = ctx.opacity_sub().DOUBLE().toString();
+        if(oNode != null) {
+            this.shapeOpacity = ctx.opacity_sub().DOUBLE().toString();
+            this.opacityS = true;
+        }
     }
 
     public void exitRect_param(ImgLangParser.Rect_paramContext ctx) {
@@ -149,10 +189,30 @@ public class ImageListener extends ImgLangBaseListener{
         int y = Integer.parseInt(this.shapePositionY);
         Position pos = new Position(x,y);
         int p = Integer.parseInt(this.shapePriority);
-        RGB rgb = new RGB(Integer.parseInt(this.shapeR), Integer.parseInt(this.shapeG), Integer.parseInt(this.shapeB));
-        double o = Double.parseDouble(this.shapeOpacity);
-        Rectangle r = new Rectangle(w,h,pos,p,rgb,o);
-        this.currentLayer.appendShape(r);
+        if(this.opacityS == false && this.rgbS == false) {
+            Rectangle r = new Rectangle(w,h,pos,p);
+            this.currentLayer.appendShape(r);
+        }
+        else if(this.opacityS == true && this.rgbS == true){
+            RGB rgb = new RGB(Integer.parseInt(this.shapeR), Integer.parseInt(this.shapeG), Integer.parseInt(this.shapeB));
+            double o = Double.parseDouble(this.shapeOpacity);
+            Rectangle r = new Rectangle(w,h,pos,p,rgb,o);
+            this.currentLayer.appendShape(r);
+            this.opacityS = false;
+            this.rgbS = false;
+        }
+        else if(this.opacityS == true && this.rgbS == false){
+            double o = Double.parseDouble(this.shapeOpacity);
+            Rectangle r = new Rectangle(w,h,pos,p,o);
+            this.currentLayer.appendShape(r);
+            this.opacityS = false;
+        }
+        else if (this.opacityS == false && this.rgbS == true){
+            RGB rgb = new RGB(Integer.parseInt(this.shapeR), Integer.parseInt(this.shapeG), Integer.parseInt(this.shapeB));
+            Rectangle r = new Rectangle(w,h,pos,p,rgb);
+            this.currentLayer.appendShape(r);
+            this.rgbS = false;
+        }
     }
 
     public void enterCirc_block(ImgLangParser.Circ_blockContext ctx) {
@@ -168,10 +228,20 @@ public class ImageListener extends ImgLangBaseListener{
         this.shapeWidth = ctx.radius_sub().NUMBER().toString();
         this.shapePositionX = ctx.position_sub().position_val().NUMBER(0).toString();
         this.shapePositionY = ctx.position_sub().position_val().NUMBER(1).toString();
-        this.shapeOpacity = ctx.opacity_sub().DOUBLE().toString();
-        this.shapeR = ctx.color_sub().rgb_val().NUMBER(0).toString();
-        this.shapeG = ctx.color_sub().rgb_val().NUMBER(1).toString();
-        this.shapeB = ctx.color_sub().rgb_val().NUMBER(2).toString();
+        TerminalNode oNode = ctx.opacity_sub().DOUBLE();
+        if(oNode != null) {
+            this.shapeOpacity = ctx.opacity_sub().DOUBLE().toString();
+            this.opacityS = true;
+        }
+        TerminalNode rNode = ctx.color_sub().rgb_val().NUMBER(0);
+        TerminalNode gNode = ctx.color_sub().rgb_val().NUMBER(1);
+        TerminalNode bNode = ctx.color_sub().rgb_val().NUMBER(2);
+        if(rNode != null && gNode != null && bNode != null) {
+            this.shapeR = ctx.color_sub().rgb_val().NUMBER(0).toString();
+            this.shapeG = ctx.color_sub().rgb_val().NUMBER(1).toString();
+            this.shapeB = ctx.color_sub().rgb_val().NUMBER(2).toString();
+            this.rgbS = true;
+        }
         this.shapePriority = ctx.priority_sub().NUMBER().toString();
     }
 
@@ -182,10 +252,30 @@ public class ImageListener extends ImgLangBaseListener{
         int y = Integer.parseInt(this.shapePositionY);
         Position center = new Position(x,y);
         int p = Integer.parseInt(this.shapePriority);
-        RGB rgb = new RGB(Integer.parseInt(this.shapeR), Integer.parseInt(this.shapeG), Integer.parseInt(this.shapeB));
-        double o = Double.parseDouble(this.shapeOpacity);
-        Circle c = new Circle(r,center,p,rgb,o);
-        this.currentLayer.appendShape(c);
+        if(this.opacityS == false && this.rgbS == false) {
+            Circle c = new Circle(r,center,p);
+            this.currentLayer.appendShape(c);
+        }
+        else if(this.opacityS == true && this.rgbS == true){
+            RGB rgb = new RGB(Integer.parseInt(this.shapeR), Integer.parseInt(this.shapeG), Integer.parseInt(this.shapeB));
+            double o = Double.parseDouble(this.shapeOpacity);
+            Circle c = new Circle(r,center,p,rgb,o);
+            this.currentLayer.appendShape(c);
+            this.opacityS = false;
+            this.rgbS = false;
+        }
+        else if(this.opacityS == true && this.rgbS == false) {
+            double o = Double.parseDouble(this.shapeOpacity);
+            Circle c = new Circle(r,center,p,o);
+            this.currentLayer.appendShape(c);
+            this.opacityS = false;
+        }
+        else if(this.opacityS == false && this.rgbS == true) {
+            RGB rgb = new RGB(Integer.parseInt(this.shapeR), Integer.parseInt(this.shapeG), Integer.parseInt(this.shapeB));
+            Circle c = new Circle(r,center,p,rgb);
+            this.currentLayer.appendShape(c);
+            this.rgbS = false;
+        }
     }
 
     public void enterPoly_block(ImgLangParser.Poly_blockContext ctx) {
@@ -208,10 +298,20 @@ public class ImageListener extends ImgLangBaseListener{
         }
         this.shapePositionX = ctx.position_sub().position_val().NUMBER(0).toString();
         this.shapePositionY = ctx.position_sub().position_val().NUMBER(1).toString();
-        this.shapeOpacity = ctx.opacity_sub().DOUBLE().toString();
-        this.shapeR = ctx.color_sub().rgb_val().NUMBER(0).toString();
-        this.shapeG = ctx.color_sub().rgb_val().NUMBER(1).toString();
-        this.shapeB = ctx.color_sub().rgb_val().NUMBER(2).toString();
+        TerminalNode oNode = ctx.opacity_sub().DOUBLE();
+        if(oNode != null) {
+            this.shapeOpacity = ctx.opacity_sub().DOUBLE().toString();
+            this.opacityS = true;
+        }
+        TerminalNode rNode = ctx.color_sub().rgb_val().NUMBER(0);
+        TerminalNode gNode = ctx.color_sub().rgb_val().NUMBER(1);
+        TerminalNode bNode = ctx.color_sub().rgb_val().NUMBER(2);
+        if(rNode != null && gNode != null && bNode != null) {
+            this.shapeR = ctx.color_sub().rgb_val().NUMBER(0).toString();
+            this.shapeG = ctx.color_sub().rgb_val().NUMBER(1).toString();
+            this.shapeB = ctx.color_sub().rgb_val().NUMBER(2).toString();
+            this.rgbS = true;
+        }
         this.shapePriority = ctx.priority_sub().NUMBER().toString();
     }
 
@@ -225,10 +325,30 @@ public class ImageListener extends ImgLangBaseListener{
         int y = Integer.parseInt(this.shapePositionY);
         Position pos = new Position(x,y);
         int p = Integer.parseInt(this.shapePriority);
-        RGB rgb = new RGB(Integer.parseInt(this.shapeR), Integer.parseInt(this.shapeG), Integer.parseInt(this.shapeB));
-        double o = Double.parseDouble(this.shapeOpacity);
-        Polygon poly = new Polygon(vertexes,pos,p,rgb,o);
-        this.currentLayer.appendShape(poly);
+        if(this.opacityS == false && this.rgbS == false) {
+            Polygon poly = new Polygon(vertexes,pos,p);
+            this.currentLayer.appendShape(poly);
+        }
+        else if(this.opacityS == true && this.rgbS == true){
+            RGB rgb = new RGB(Integer.parseInt(this.shapeR), Integer.parseInt(this.shapeG), Integer.parseInt(this.shapeB));
+            double o = Double.parseDouble(this.shapeOpacity);
+            Polygon poly = new Polygon(vertexes,pos,p,rgb,o);
+            this.currentLayer.appendShape(poly);
+            this.opacityS = false;
+            this.rgbS = false;
+        }
+        else if(this.opacityS == true && this.rgbS == false) {
+            double o = Double.parseDouble(this.shapeOpacity);
+            Polygon poly = new Polygon(vertexes,pos,p,o);
+            this.currentLayer.appendShape(poly);
+            this.opacityS = false;
+        }
+        else if(this.opacityS == false && this.rgbS == true) {
+            RGB rgb = new RGB(Integer.parseInt(this.shapeR), Integer.parseInt(this.shapeG), Integer.parseInt(this.shapeB));
+            Polygon poly = new Polygon(vertexes,pos,p,rgb);
+            this.currentLayer.appendShape(poly);
+            this.rgbS = false;
+        }
     }
 
     public void enterTrans_block(ImgLangParser.Trans_blockContext ctx) {

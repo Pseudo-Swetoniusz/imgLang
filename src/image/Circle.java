@@ -21,6 +21,14 @@ public class Circle implements Shape{
         this(radius,center, priority, new RGB(255,255,255),1);
     }
 
+    public Circle(int radius, Position center, int priority, RGB rgb) {
+        this(radius,center, priority, rgb,1);
+    }
+
+    public Circle(int radius, Position center, int priority, double opacity) {
+        this(radius,center, priority, new RGB(255,255,255),opacity);
+    }
+
     public int getPriority() {
         return this.priority;
     }

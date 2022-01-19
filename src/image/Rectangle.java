@@ -23,6 +23,14 @@ public class Rectangle implements Shape {
         this(width,height,position,priority,new RGB(255,255,255),1);
     }
 
+    public Rectangle(int width, int height, Position position, int priority, RGB rgb) {
+        this(width,height,position,priority,rgb,1);
+    }
+
+    public Rectangle(int width, int height, Position position, int priority, double opacity) {
+        this(width,height,position,priority,new RGB(255,255,255),opacity);
+    }
+
     public int getPriority() {
         return this.priority;
     }

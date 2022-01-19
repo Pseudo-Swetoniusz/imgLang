@@ -22,6 +22,14 @@ public class Polygon implements Shape{
         this(vertexes,position,priority,new RGB(255,255,255),1);
     }
 
+    public Polygon(ArrayList<Position> vertexes, Position position, int priority, RGB rgb) {
+        this(vertexes,position,priority,rgb,1);
+    }
+
+    public Polygon(ArrayList<Position> vertexes, Position position, int priority, double opacity) {
+        this(vertexes,position,priority,new RGB(255,255,255),opacity);
+    }
+
     public int getPriority() {
         return this.priority;
     }

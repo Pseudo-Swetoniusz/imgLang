@@ -1,0 +1,82 @@
+image abstract:
+   background:
+      width:400
+      height:600
+      color: rgb(255,255,255)
+      opacity: 1.0
+   layer layer_1:
+      width:400
+      height:600
+      position: (0, 0)
+      priority: 5
+      shapes:
+         rectangle rect_1:
+            width: 20
+            height: 600
+            position: (20,0)
+            priority: 2
+            color: rgb(186,100,69)
+            opacity: 0.5
+         rectangle rect_2:
+            width: 20
+            height: 600
+            position: (300,0)
+            priority: 2
+            color: rgb(186,100,69)
+            opacity: 0.5
+         rectangle rect_3:
+            width: 400
+            height: 5
+            position: (0, 540)
+            priority: 1
+            color: rgb(183,49,35)
+            opacity: 0.7
+         rectangle rect_4:
+            width: 400
+            height: 10
+            position: (0,550)
+            priority: 1
+            color: rgb(147,26,66)
+            opacity: 0.8
+   layer layer_2:
+      width: 250
+      height: 250
+      position: (150, 200)
+      priority: 3
+      shapes:
+         circle circ_1:
+            radius: 100
+            position: (100, 100)
+            priority: 2
+            color: rgb(43,88,43)
+            opacity: 1.0
+         circle circ_2:
+            radius: 40
+            position: (60, 190)
+            priority: 1
+            color: rgb(43,124,171)
+            opacity: 1.0
+   layer layer_3:
+      width: 300
+      height:300
+      position: (0,0)
+      priority: 1
+      shapes:
+         polygon poly_1:
+            vertexes: [(3,0),(20,20),(5,12),(0,24)]
+            position: (50,50)
+            priority: 1
+            color: rgb(229,193,48)
+            opacity: 0.9
+         polygon poly_2:
+            vertexes: [(0,0),(35,10),(23,40),(20,20)]
+            position: (70,90)
+            priority: 1
+            color: rgb(224,166,64)
+            opacity: 1.0
+         polygon poly_3:
+            vertexes: [(20,0),(70,50),(0,100)]
+            position:(110,120)
+            priority: 1
+            color: rgb(229,193,48)
+            opacity: 1.0

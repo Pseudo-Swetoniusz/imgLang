@@ -1,0 +1,121 @@
+image still_nature:
+   background:
+      width:600
+      height:600
+      color: rgb(112,106,95)
+      opacity: 1.0
+   layer layer_1:
+      width: 600
+      height: 150
+      position: (0,450)
+      priority: 5
+      shapes:
+         rectangle rect_1:
+            width: 600
+            height: 150
+            position: (0,0)
+            priority: 1
+            color: rgb(41,36,26)
+            opacity: 0.7
+   layer layer_2:
+      width: 300
+      height: 400
+      position:(150,200)
+      priority: 3
+      shapes:
+         circle circ_1:
+            radius: 120
+            position: (150,220)
+            priority: 2
+            color:rgb(104,75,62)
+            opacity: 1.0
+         polygon poly_1:
+            vertexes: [(0,0),(200,0),(150,100),(50,100)]
+            position:(50,70)
+            priority: 2
+            color:rgb(104,75,62)
+            opacity: 1.0
+         circle circ_2:
+            radius: 50
+            position: (250,130)
+            priority: 4
+            color:rgb(104,75,62)
+            opacity: 1.0
+         circle circ_3:
+            radius: 30
+            position: (250,130)
+            priority: 3
+            color: rgb(112,106,95)
+            opacity: 1.0
+   layer layer_3:
+      width:500
+      height:200
+      position:(50,100)
+      priority: 4
+      shapes:
+         polygon poly_1:
+            vertexes: [(0,0),(100,30),(200,70),(200,100),(150,70),(100,50)]
+            position:(0,100)
+            priority:2
+            color:rgb(44,75,54)
+            opacity: 1.0
+         polygon poly_2:
+            vertexes: [(100,0),(200,50),(250,100),(275,50),(300,0),(300,70),(350,50),(330,100),(300,150),(250,200),(200,150),(180,80)]
+            position:(0,0)
+            priority: 2
+            color: rgb(44,75,54)
+            opacity: 1.0
+         polygon poly_3:
+            vertexes: [(100,50),(220,150),(300,180),(400,125),(500,100),(400,170),(300,200),(220,190),(100,120),(160,125)]
+            position:(0,10)
+            priority: 1
+            color: rgb(56,90,50)
+            opacity: 1.0
+         polygon poly_4:
+            vertexes: [(310,100),(350,50),(360,95),(400,70),(340,200),(260,200),(260,180)]
+            position: (0,0)
+            priority: 1
+            color: rgb(56,90,50)
+            opacity: 1.0
+   layer layer_4:
+      width:500
+      height:300
+      position:(50,100)
+      priority: 2
+      shapes:
+         polygon poly_1:
+            vertexes: [(100,200),(150,100),(200,100),(200,130)]
+            position:(0,40)
+            priority:1
+            color: rgb(56,90,50)
+            opacity: 1.0
+         polygon poly_2:
+            vertexes: [(230,100),(280,100),(280,200)]
+            position: (0,40)
+            priority:1
+            color: rgb(44,75,54)
+            opacity: 1.0
+         polygon poly_3:
+            vertexes: [(0,20),(20,0),(35,20),(16,20),(30,40)]
+            position: (150,150)
+            priority: 1
+            color: rgb(189,84,43)
+            opacity: 1.0
+         polygon poly_4:
+            vertexes: [(0,20),(20,0),(35,20),(16,20),(30,40)]
+            position: (310,110)
+            priority: 1
+            color: rgb(208,143,40)
+            opacity: 1.0
+         polygon poly_5:
+            vertexes: [(0,0),(10,10),(20,6),(15,15),(18,23),(10,18),(0,20),(3,10)]
+            position: (200,100)
+            priority: 1
+            color: rgb(208,143,40)
+            opacity: 1.0
+         polygon poly_6:
+            vertexes: [(0,0),(30,30),(60,18),(45,45),(54,69),(30,54),(0,60),(9,30)]
+            position: (240,100)
+            priority: 1
+            color: rgb(189,84,43)
+            opacity: 1.0
